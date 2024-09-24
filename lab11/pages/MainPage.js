@@ -10,6 +10,7 @@ class MainPage extends PageManager {
         this.mangaCardSelector = "div.Grid_gridItem__aPUx1:nth-child(1)";
         this.mangaTitleSelector = "div.Grid_gridItem__aPUx1:nth-child(1) > a:nth-child(1)";
         this.mangaName = "//a[@title=\"Поднятие уровня в одиночку: Рагнарёк\"]";
+       // this.notFindMangaResult = "//p[text()=\"Нет результатов\"]";
     }
 
     async navigate() {
@@ -35,6 +36,16 @@ class MainPage extends PageManager {
         const firstCard = await super.findElement(By.css(this.mangaCardSelector));
         const titleElement = await firstCard.findElement(By.css(this.mangaTitleSelector));
         return await titleElement.getText();
+    }
+
+    async findMangaResult() {
+        try {
+            await this.driver.wait(until.elementLocated(By.css(this.mangaCardSelector)), 5000);
+            const results = await this.driver.findElements(By.css(this.mangaCardSelector));
+            return results.length > 0;
+        } catch (error) {
+            return false;
+        }
     }
 
     async clickMangaButton() {

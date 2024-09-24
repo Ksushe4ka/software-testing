@@ -69,4 +69,17 @@ describe('Тесты манги на Remanga', function() {
 
         //expect(firstMangaTitle.toLowerCase()).to.include(searchQuery.toLowerCase());
     });
+
+    it('Тест 4: Проверка поиска манхвы по несуществующему названию', async function() {
+        this.timeout(10000);
+        const mainPage = new MainPage(driver);
+        const searchQuery = ' ';
+
+        console.log('Запуск теста 4: Проверка поиска несуществующей манхвы');
+        await mainPage.navigate();
+        await mainPage.clickSearchButton();
+        await mainPage.searchForMangaGenre(searchQuery);
+        //await mainPage.waitForResults();
+        expect(await mainPage.findMangaResult()).to.be.false;
+    });
 });
