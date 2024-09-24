@@ -13,6 +13,8 @@ class MangaPage extends PageManager {
         this.loginInputSelector = "//input[@name=\"user\"]";
         this.passwordInputSelector = "//input[@name=\"password\"]"; 
         this.loginInButtonSelector = "//button[@class=\"Button_button___CisL Button_button___CisL Button_contained__8_KFk Button_contained-primary__IViyX Button_contained-size-large__HCqRj Button_fullWidth__Dgoqh\"]"; 
+        this.commentInputSelector = "//textarea[@class=\"Input_input___YBKm Input_inputMultiline___1t_w Input_inputAdornedEnd__cpAGk\"]"; 
+        this.commentButtonSelector = "//button[@class=\"Button_button___CisL Button_button___CisL Button_text__IGNQ6 Button_text-primary__WgBRV Button_text-size-small__Vj_9d ActivityInput_iconButton__c7KaX\"]";
     }
 
     async navigate() {
@@ -48,23 +50,29 @@ class MangaPage extends PageManager {
         }
     }
 
-    async getDriver(){
-        return await super.getDriver();
+    async inputleaveComment(query) {
+        await super.wait(By.xpath(this.commentInputSelector), 7000);
+        const inputComment = await super.findElement(By.xpath(this.commentInputSelector));
+        await this.driver.wait(until.elementIsVisible(inputComment), 10000);
+        await super.sendKeys(inputComment, query);
     }
 
-
-    async login(username, password) {
-        super.wait(By.xpath(this.findLoginButton), 10000);
-        const loginButton = await super.findElement(By.xpath(this.findLoginButton));
-        await super.click(loginButton);
-        const buttonMailAndPassword = await super.findElement(By.css(this.findButtonMailAndPassword));
+    async buttonleaveComment(username, password) {
+        await super.wait(By.xpath(this.commentButtonSelector), 5000);
+        const button = await super.findElement(By.xpath(this.commentButtonSelector));
+        await super.click(button);
+        const buttonMailAndPassword = await super.findElement(By.xpath(this.findButtonMailAndPassword));
         await super.click(buttonMailAndPassword);
         const loginInput = await super.findElement(By.xpath(this.loginInputSelector));
         await super.sendKeys(loginInput, username);
         const passwordInput = await super.findElement(By.xpath(this.passwordInputSelector));
         await super.sendKeys(passwordInput, password);
-        const loginInButton = await super.findElement(By.css(this.loginInButtonSelector))
+        const loginInButton = await super.findElement(By.xpath(this.loginInButtonSelector))
         await super.click(loginInButton);
+    }
+
+    async getDriver(){
+        return await super.getDriver();
     }
 }
 

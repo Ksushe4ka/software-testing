@@ -82,4 +82,22 @@ describe('Тесты манги на Remanga', function() {
         //await mainPage.waitForResults();
         expect(await mainPage.findMangaResult()).to.be.false;
     });
+
+    it('Тест 5: Проверка комментирования манхвы', async function() {
+        this.timeout(10000);
+        const mainPage = new MainPage(driver);
+        const searchQuery = 'Поднятие уровня в одиночку: Рагнарёк';
+        const commentQuery = 'прекрасная манхва';
+
+        console.log('Запуск теста 5: Проверка комментирования манхвы');
+        await mainPage.navigate();
+        await mainPage.clickSearchButton();
+        await mainPage.searchForMangaGenre(searchQuery);
+        await mainPage.waitForResults();
+        let drivermanga = await mainPage.clickMangaButton()
+        const mangaPage = new MangaPage(driver);
+        //await mangaPage.login(username, password);
+        await mangaPage.inputleaveComment(commentQuery);
+        await mangaPage.buttonleaveComment(username, password);
+    });
 });
